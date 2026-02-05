@@ -32,12 +32,14 @@ export const Header = () => {
     };
 
     return (
-        <header className="bg-white shadow-sm sticky top-0 z-40">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="flex items-center justify-between h-16">
+        <header className="bg-white border-b border-gray-200 sticky top-0 z-40">
+            <div className="max-w-[1400px] mx-auto px-4">
+                <div className="flex items-center justify-between h-14 md:h-16">
                     <Link to="/" className="flex items-center space-x-2 group shrink-0">
-                        <Bike className="w-8 h-8 text-blue-600 group-hover:text-blue-700 transition-colors" />
-                        <span className="text-xl font-bold text-gray-900 hidden xs:block">E-Bike Parts</span>
+                        <div className="bg-orange-500 p-1.5 rounded-lg">
+                            <Bike className="w-5 h-5 md:w-6 md:h-6 text-white" />
+                        </div>
+                        <span className="text-lg md:text-xl font-black text-gray-900 tracking-tighter uppercase italic">E-Bike<span className="text-orange-500">Store</span></span>
                     </Link>
 
                     <nav className="flex items-center space-x-4 md:space-x-6">
