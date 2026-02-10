@@ -76,9 +76,9 @@ export const CategoryManager = () => {
     if (loading) return <Loading />;
 
     return (
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-            <div className="flex justify-between items-center mb-6">
-                <h2 className="text-xl font-bold text-gray-900">Categories</h2>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-3 md:p-6">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-4 md:mb-6">
+                <h2 className="text-lg md:text-xl font-bold text-gray-900">Categories</h2>
                 {!showForm && (
                     <Button onClick={() => setShowForm(true)} size="small">
                         <Plus className="w-4 h-4 mr-2 inline" />
@@ -121,40 +121,42 @@ export const CategoryManager = () => {
             {categories.length === 0 ? (
                 <p className="text-gray-600 text-center py-8 text-sm">No categories yet. Add your first category!</p>
             ) : (
-                <div className="overflow-x-auto">
-                    <table className="w-full">
-                        <thead>
-                            <tr className="border-b border-gray-200">
-                                <th className="text-left py-3 px-4 text-sm font-semibold text-gray-700">Category Name</th>
-                                <th className="text-right py-3 px-4 text-sm font-semibold text-gray-700">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {categories.map((category) => (
-                                <tr key={category.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                                    <td className="py-3 px-4 text-sm text-gray-900">{category.name}</td>
-                                    <td className="py-3 px-4 text-right">
-                                        <div className="flex justify-end space-x-2">
-                                            <button
-                                                onClick={() => handleEdit(category)}
-                                                className="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors"
-                                                title="Edit"
-                                            >
-                                                <Pencil className="w-4 h-4" />
-                                            </button>
-                                            <button
-                                                onClick={() => handleDelete(category.id)}
-                                                className="p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors"
-                                                title="Delete"
-                                            >
-                                                <Trash2 className="w-4 h-4" />
-                                            </button>
-                                        </div>
-                                    </td>
+                <div className="overflow-x-auto -mx-3 md:mx-0">
+                    <div className="inline-block min-w-full align-middle">
+                        <table className="min-w-full">
+                            <thead>
+                                <tr className="border-b border-gray-200">
+                                    <th className="text-left py-2 md:py-3 px-2 md:px-4 text-xs md:text-sm font-semibold text-gray-700">Category Name</th>
+                                    <th className="text-right py-2 md:py-3 px-2 md:px-4 text-xs md:text-sm font-semibold text-gray-700">Actions</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {categories.map((category) => (
+                                    <tr key={category.id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
+                                        <td className="py-2 md:py-3 px-2 md:px-4 text-xs md:text-sm text-gray-900">{category.name}</td>
+                                        <td className="py-2 md:py-3 px-2 md:px-4 text-right">
+                                            <div className="flex justify-end space-x-2">
+                                                <button
+                                                    onClick={() => handleEdit(category)}
+                                                    className="p-1.5 text-blue-600 hover:bg-blue-50 rounded transition-colors"
+                                                    title="Edit"
+                                                >
+                                                    <Pencil className="w-4 h-4" />
+                                                </button>
+                                                <button
+                                                    onClick={() => handleDelete(category.id)}
+                                                    className="p-1.5 text-red-600 hover:bg-red-50 rounded transition-colors"
+                                                    title="Delete"
+                                                >
+                                                    <Trash2 className="w-4 h-4" />
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             )}
         </div>

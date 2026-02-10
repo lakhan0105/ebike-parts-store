@@ -93,6 +93,24 @@ export const ProductDetail = () => {
                             </span>
                         </div>
 
+                        <div className="mb-6 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                            <h3 className="text-sm font-semibold text-gray-700 mb-2">Availability</h3>
+                            {product.stock > 0 ? (
+                                <div className="flex items-center gap-2">
+                                    <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-sm font-bold">
+                                        In Stock
+                                    </span>
+                                    <span className="text-sm text-gray-600">
+                                        {product.stock} {product.stock === 1 ? 'unit' : 'units'} available
+                                    </span>
+                                </div>
+                            ) : (
+                                <span className="px-3 py-1 bg-red-100 text-red-700 rounded-full text-sm font-bold">
+                                    Out of Stock
+                                </span>
+                            )}
+                        </div>
+
                         <div className="mt-auto">
                             <Button
                                 onClick={handleAddToCart}
