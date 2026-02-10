@@ -5,7 +5,7 @@ import { Loading } from '../components/ui/Loading';
 import { Marquee } from '../components/ui/Marquee';
 import { categoryService } from '../services/categoryService';
 import { productService } from '../services/productService';
-import { Star, ChevronRight } from 'lucide-react';
+import { Star, ChevronRight, MoreVertical, X } from 'lucide-react';
 
 export const Home = () => {
     const [categories, setCategories] = useState([]);
@@ -13,6 +13,7 @@ export const Home = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [activeCategory, setActiveCategory] = useState('all');
+    const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
 
     useEffect(() => {
         loadData();
@@ -65,14 +66,14 @@ export const Home = () => {
 
             {/* Main Content */}
             <div className="max-w-[1400px] mx-auto px-4 py-4">
-                {/* Mobile Categories - Horizontal Scroll (Moved outside main flex for easier stacking) */}
+                {/* Mobile Categories - Horizontal Scroll */}
                 <div className="md:hidden mb-4 overflow-x-auto no-scrollbar border-b border-gray-200">
                     <div className="flex gap-2 pb-4">
                         <button
                             onClick={() => setActiveCategory('all')}
                             className={`whitespace-nowrap px-5 py-2 rounded-full text-xs font-bold border transition-all ${activeCategory === 'all'
-                                ? 'bg-orange-500 text-white border-orange-500 shadow-sm'
-                                : 'bg-white text-gray-700 border-gray-300'
+                                    ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                                    : 'bg-white text-gray-700 border-gray-300'
                                 }`}
                         >
                             All Products
@@ -82,13 +83,21 @@ export const Home = () => {
                                 key={category.id}
                                 onClick={() => setActiveCategory(category.id)}
                                 className={`whitespace-nowrap px-5 py-2 rounded-full text-xs font-bold border transition-all ${activeCategory === category.id
-                                    ? 'bg-orange-500 text-white border-orange-500 shadow-sm'
-                                    : 'bg-white text-gray-700 border-gray-300'
+                                        ? 'bg-blue-600 text-white border-blue-600 shadow-sm'
+                                        : 'bg-white text-gray-700 border-gray-300'
                                     }`}
                             >
                                 {category.name}
                             </button>
                         ))}
+                        {/* Three-dot menu button at the end */}
+                        <button
+                            onClick={() => setIsFilterModalOpen(true)}
+                            className="flex-shrink-0 p-2 hover:bg-gray-100 rounded-lg transition-colors border border-gray-300 bg-white"
+                            aria-label="View all filters"
+                        >
+                            <MoreVertical className="w-5 h-5 text-gray-700" />
+                        </button>
                     </div>
                 </div>
 
@@ -102,7 +111,7 @@ export const Home = () => {
                             <div className="py-2">
                                 <button
                                     onClick={() => setActiveCategory('all')}
-                                    className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors flex items-center justify-between group ${activeCategory === 'all' ? 'bg-orange-50 text-orange-600 font-bold' : 'text-gray-700'
+                                    className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors flex items-center justify-between group ${activeCategory === 'all' ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-700'
                                         }`}
                                 >
                                     All Products
@@ -112,7 +121,7 @@ export const Home = () => {
                                     <button
                                         key={category.id}
                                         onClick={() => setActiveCategory(category.id)}
-                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors flex items-center justify-between group ${activeCategory === category.id ? 'bg-orange-50 text-orange-600 font-bold' : 'text-gray-700'
+                                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors flex items-center justify-between group ${activeCategory === category.id ? 'bg-blue-50 text-blue-600 font-bold' : 'text-gray-700'
                                             }`}
                                     >
                                         {category.name}
@@ -152,6 +161,17 @@ export const Home = () => {
                                                 Best Choice
                                             </div>
                                         )}
+                                        <div className="absolute top-2 right-2">
+                                            {product.stock > 0 ? (
+                                                <span className="px-2 py-0.5 bg-green-500 text-white text-[10px] font-bold rounded shadow-lg">
+                                                    {product.stock} in stock
+                                                </span>
+                                            ) : (
+                                                <span className="px-2 py-0.5 bg-red-500 text-white text-[10px] font-bold rounded shadow-lg">
+                                                    Out of Stock
+                                                </span>
+                                            )}
+                                        </div>
                                     </div>
                                     <div className="p-4 flex flex-col flex-1">
                                         <h3 className="text-sm font-medium text-gray-800 mb-2 line-clamp-2 leading-snug group-hover:text-orange-600 transition-colors">
@@ -172,9 +192,7 @@ export const Home = () => {
                                                 <span className="text-xl font-bold text-gray-900">₹{product.price.toLocaleString()}</span>
                                                 <span className="text-xs text-gray-400 line-through">₹{(product.price * 1.25).toLocaleString()}</span>
                                             </div>
-                                            <p className="text-[10px] text-green-600 font-bold">
-                                                FREE delivery by tomorrow
-                                            </p>
+
                                         </div>
                                     </div>
                                 </Link>
@@ -199,6 +217,62 @@ export const Home = () => {
                     </div>
                 </div>
             </div>
+
+            {/* Mobile Filter Modal */}
+            {isFilterModalOpen && (
+                <div className="md:hidden fixed inset-0 z-50 flex items-end sm:items-center justify-center">
+                    {/* Backdrop */}
+                    <div
+                        className="absolute inset-0 bg-black bg-opacity-50"
+                        onClick={() => setIsFilterModalOpen(false)}
+                    />
+
+                    {/* Modal Content */}
+                    <div className="relative bg-white rounded-t-2xl sm:rounded-2xl w-full sm:max-w-md max-h-[80vh] overflow-hidden animate-slideUp">
+                        {/* Header */}
+                        <div className="flex items-center justify-between p-4 border-b border-gray-200">
+                            <h3 className="text-lg font-bold text-gray-900">Filter by Category</h3>
+                            <button
+                                onClick={() => setIsFilterModalOpen(false)}
+                                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                            >
+                                <X className="w-5 h-5 text-gray-600" />
+                            </button>
+                        </div>
+
+                        {/* Category List */}
+                        <div className="overflow-y-auto max-h-[60vh] p-2">
+                            <button
+                                onClick={() => {
+                                    setActiveCategory('all');
+                                    setIsFilterModalOpen(false);
+                                }}
+                                className={`w-full text-left px-4 py-3 rounded-lg mb-1 transition-colors ${activeCategory === 'all'
+                                    ? 'bg-blue-600 text-white font-bold'
+                                    : 'hover:bg-gray-100 text-gray-700'
+                                    }`}
+                            >
+                                All Products
+                            </button>
+                            {categories.map((category) => (
+                                <button
+                                    key={category.id}
+                                    onClick={() => {
+                                        setActiveCategory(category.id);
+                                        setIsFilterModalOpen(false);
+                                    }}
+                                    className={`w-full text-left px-4 py-3 rounded-lg mb-1 transition-colors ${activeCategory === category.id
+                                        ? 'bg-blue-600 text-white font-bold'
+                                        : 'hover:bg-gray-100 text-gray-700'
+                                        }`}
+                                >
+                                    {category.name}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
         </Layout>
     );
 };
